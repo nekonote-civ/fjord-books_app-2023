@@ -1,9 +1,14 @@
 en:
   page:
-    show: Show this book
-    new: New book
-    edit: Edit this book
-    back: Back to books
+    headline:
+      top: Books
+      new: New Book
+      edit: Editing book
+    link:
+      show: Show this book
+      new: New book
+      edit: Edit this book
+      back: Back to books
 
   activerecord:
     models:

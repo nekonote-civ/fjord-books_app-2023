@@ -1,14 +1,14 @@
 <p style="color: green"><%= notice %></p>
 
-<h1><%= t("activerecord.models.book", count: 2) %></h1>
+<h1><%= t("page.headline.top") %></h1>
 
 <div id="books">
   <% @books.each do |book| %>
     <%= render book %>
     <p>
-      <%= link_to t("page.show"), book %>
+      <%= link_to t("page.link.show"), book %>
     </p>
   <% end %>
 </div>
 
-<%= link_to t("page.new"), new_book_path %>
+<%= link_to t("page.link.new"), new_book_path %>
