@@ -2,13 +2,17 @@
 
 <h1><%= t("page.headline.top") %></h1>
 
-<div id="books">
+<div id="books" class="index-items">
   <% @books.each do |book| %>
-    <%= render book %>
-    <p>
-      <%= link_to t("page.link.show"), book %>
-    </p>
+    <div class="index-item">
+      <%= render book %>
+      <p>
+        <%= link_to t("page.link.show"), book %>
+      </p>
+    </div>
   <% end %>
 </div>
 
-<%= link_to t("page.link.new"), new_book_path %>
+<nav class="page-nav">
+  <%= link_to t("page.link.new"), new_book_path %>
+</nav>
