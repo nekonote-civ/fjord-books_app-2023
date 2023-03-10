@@ -1,10 +1,13 @@
 en:
+  page:
+    show: Show this book
+    new: New book
+    edit: Edit this book
+    back: Back to books
+
   activerecord:
     models:
-      book: #g
-        zero: Book
-        one: Book
-        other: Books
+      book: book
 
     attributes:
       book:
