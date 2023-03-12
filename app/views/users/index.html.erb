@@ -1,0 +1,13 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Page Title.</h1>
+
+<div id="users" class="index-items">
+  <% @users.each do |user| %>
+    <div class="index-item">
+      <%= render user %>
+    </div>
+  <% end %>
+</div>
+
+<%= paginate @users %>
