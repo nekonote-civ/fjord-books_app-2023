@@ -1,7 +1,9 @@
 <p style="color: green"><%= notice %></p>
 
-<h2>User Info</h2>
-
 <div class="show-item">
   <%= render @user %>
 </div>
+
+<nav class="page-nav">
+  <%= link_to t('views.common.back', name: User.model_name.human.downcase), users_path %>
+</nav>

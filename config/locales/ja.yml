@@ -184,7 +184,9 @@ ja:
   views:
     common:
       show: "この%{name}を表示"
+      show_content: "%{name}の%{content}を表示"
       edit: "この%{name}を編集"
+      edit_content: "%{name}の%{content}を編集"
       destroy: "この%{name}を削除"
       new: "%{name}の新規作成"
       back: "%{name}の一覧に戻る"
@@ -194,6 +196,10 @@ ja:
       title_edit: "%{name}の編集"
       error: エラー
       validation_error: "%{errors}があるため、この%{name}は保存できませんでした"
+      session:
+        sign_in: ログイン
+        sign_out: ログアウト
+        sign_up: アカウント登録
     pagination:
       first: '« 最初'
       last: '最後 »'
