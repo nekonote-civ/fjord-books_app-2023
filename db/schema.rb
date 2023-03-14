@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_12_141704) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_14_083100) do
   create_table "books", force: :cascade do |t|
     t.string "title"
     t.text "memo"
@@ -24,7 +24,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_12_141704) do
     t.integer "user_id", null: false
     t.string "zipcode", limit: 7
     t.string "address"
-    t.text "text"
+    t.text "introduction"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_profiles_on_user_id"

@@ -3,5 +3,5 @@ class Profile < ApplicationRecord
 
   validates :zipcode, presence: true
   validates :address, presence: true
-  validates :text, presence: true
+  validates :introduction, presence: true
 end
