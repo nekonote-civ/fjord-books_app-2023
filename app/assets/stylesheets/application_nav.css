@@ -1,0 +1,12 @@
+/****************
+Header Nav
+****************/
+header nav {
+  display: flex;
+  align-items: center;
+}
+
+header nav li {
+  list-style: none;
+  display: inline-block;
+}
