@@ -21,4 +21,7 @@
 <div class="field">
   <%= f.label :avatar %><br />
   <%= f.file_field :avatar %>
+  <% if user_signed_in? && current_user.avatar.attached? %>
+    <p><%= image_tag current_user.avatar.variant(:thumb) %></p>
+  <% end %>
 </div>
