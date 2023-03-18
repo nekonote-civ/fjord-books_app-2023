@@ -11,6 +11,10 @@
   </head>
 
   <body class="<%= params[:action] %>">
+    <nav>
+      <%= link_to("ja", "#{request.env['PATH_INFO']}?locale=ja") %> /
+      <%= link_to("en", "#{request.env['PATH_INFO']}?locale=en") %>
+    </nav>
     <%= yield %>
   </body>
 </html>
