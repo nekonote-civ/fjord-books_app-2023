@@ -1,5 +1,7 @@
 class ReportsController < ApplicationController
-  before_action :set_report, only: %i[ show edit update destroy ]
+  include ReportsHelper
+
+  before_action :set_report, only: %i[ show update destroy edit ]
 
   def index
     @reports = Report.all
@@ -13,6 +15,7 @@ class ReportsController < ApplicationController
   end
 
   def edit
+    redirect_to reports_path, alert: "You don't have access to that report." unless created_by?(@report.user_id)
   end
 
   def create
@@ -25,24 +28,20 @@ class ReportsController < ApplicationController
   end
 
   def update
-    respond_to do |format|
-      if @report.update(report_params)
-        format.html { redirect_to report_url(@report), notice: "Report was successfully updated." }
-        format.json { render :show, status: :ok, location: @report }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @report.errors, status: :unprocessable_entity }
-      end
+    return redirect_to root_url, alert: "You don't have update to that report." unless created_by?(@report.user_id)
+
+    if @report.update(report_params)
+      redirect_to @report, notice: 'Report was successfully created.'
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
-    @report.destroy
+    return redirect_to root_url, alert: "You don't have delete to that report." unless created_by?(@report.user_id)
 
-    respond_to do |format|
-      format.html { redirect_to reports_url, notice: "Report was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    @report.destroy
+    redirect_to @report, notice: 'Report was successfully destroyed.'
   end
 
   private
