@@ -2,6 +2,23 @@
 
 <div class="show-item">
   <%= render @book %>
+
+  <div id="comments">
+    <% @comments.each do |comment| %>
+      <%= render "comments/show", comment: %>
+    <% end %>
+  </div>
+
+  <%= form_with(model: [@book, @comment]) do |form| %>
+    <div>
+      <%= form.label "Comment", style: "display: block" %>
+      <%= form.text_area :content %>
+    </div>
+
+    <div>
+      <%= form.submit %>
+    </div>
+  <% end %>
 </div>
 
 <nav class="page-nav">
