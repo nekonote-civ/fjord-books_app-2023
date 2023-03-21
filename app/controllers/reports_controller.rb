@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ReportsController < ApplicationController
-  include ReportsHelper
+  include ApplicationHelper
 
   before_action :set_report, only: %i[ show update destroy edit ]
   before_action :set_comments, only: %i[show]
