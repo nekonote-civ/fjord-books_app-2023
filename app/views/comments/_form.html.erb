@@ -1,0 +1,17 @@
+<div id="comments">
+  <p><strong>Comment</strong></p>
+  <% @comments.each do |comment| %>
+    <%= render comment %>
+  <% end %>
+</div>
+
+<%= form_with(model: [@comment.commentable, @comment]) do |form| %>
+  <div>
+    <%= form.label "Comment", style: "display: block" %>
+    <%= form.text_area :content %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

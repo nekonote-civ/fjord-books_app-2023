@@ -2,24 +2,7 @@
 
 <div class="show-item">
   <%= render @report %>
-
-  <div id="comments">
-    <p><strong>Comment</strong></p>
-    <% @comments.each do |comment| %>
-      <%= render "comments/comment", comment: %>
-    <% end %>
-  </div>
-
-  <%= form_with(model: [@report, @comment]) do |form| %>
-    <div>
-      <%= form.label "Comment", style: "display: block" %>
-      <%= form.text_area :content %>
-    </div>
-
-    <div>
-      <%= form.submit %>
-    </div>
-  <% end %>
+  <%= render "comments/form" %>
 </div>
 
 <nav class="page-nav">
