@@ -1,13 +1,18 @@
+# frozen_string_literal: true
+
 class ReportsController < ApplicationController
   include ReportsHelper
 
   before_action :set_report, only: %i[ show update destroy edit ]
+  before_action :set_comments, only: %i[show]
 
   def index
     @reports = Report.order(:id).page(params[:page])
   end
 
-  def show; end
+  def show
+    @comment = @report.comments.build
+  end
 
   def new
     @report = Report.new
@@ -47,6 +52,10 @@ class ReportsController < ApplicationController
 
   def set_report
     @report = Report.find(params[:id])
+  end
+
+  def set_comments
+    @comments = @report.comments.where.not(id: nil)
   end
 
   def report_params
