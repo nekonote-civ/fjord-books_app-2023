@@ -1,5 +1,9 @@
-<div id="<%= dom_id comment %>">
-  <p>
+<div class="comment-container">
+  <div class="comment-header">
+    <h2><%= link_to user_name(comment.user_id), user_url(comment.user_id) %></h2>
+    <time><%= l(comment.created_at, format: :long_time) %></time>
+  </div>
+  <div class="comment-body">
     <%= comment.content %>
-  </p>
+  </div>
 </div>

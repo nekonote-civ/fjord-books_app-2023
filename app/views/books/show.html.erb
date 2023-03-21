@@ -4,8 +4,9 @@
   <%= render @book %>
 
   <div id="comments">
+    <p><strong>Comment</strong></p>
     <% @comments.each do |comment| %>
-      <%= render "comments/show", comment: %>
+      <%= render "comments/comment", comment: %>
     <% end %>
   </div>
 

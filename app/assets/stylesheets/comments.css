@@ -1,0 +1,36 @@
+#comments {
+  padding: 20px 0;
+}
+
+.comment-container {
+  border: solid var(--global-bw) var(--global-bc);
+  margin-bottom: 15px;
+}
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: solid var(--global-bw) var(--global-bc);
+  padding: 0.75rem 1rem;
+}
+
+.comment-header h2 {
+  font-size: .875rem;
+  line-height: 1.4;
+  font-weight: 600;
+  margin: 0;
+}
+
+.comment-header time {
+  display: block;
+  font-size: .8125rem;
+  line-height: 1.4;
+  color: #a09fa8;
+  white-space: nowrap;
+}
+
+.comment-body {
+  display: flex;
+  padding: 0.75rem 1rem;
+}
