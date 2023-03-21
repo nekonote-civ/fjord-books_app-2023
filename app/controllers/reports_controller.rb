@@ -37,7 +37,7 @@ class ReportsController < ApplicationController
   end
 
   def destroy
-    return redirect_to root_url, alert: "You don't have delete to that report." unless created_by?(@report.user_id)
+    return redirect_to report_url, alert: "You don't have delete to that report." unless created_by?(@report.user_id)
 
     @report.destroy
     redirect_to @report, notice: 'Report was successfully destroyed.'
