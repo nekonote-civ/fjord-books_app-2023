@@ -1,10 +1,21 @@
-<%= form_with(model: [@comment.commentable, @comment]) do |form| %>
-  <div>
-    <%= form.label "Comment", style: "display: block" %>
-    <%= form.text_area :content %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
-<% end %>
+<div id="comment-form">
+  <%= form_with(model: [@comment.commentable, @comment]) do |form| %>
+    <% if flash[:errors] %>
+      <div style="color: red">
+        <h3><%= t('views.common.validation_error', errors: i18n_error_count(flash[:errors].count), name: Comment.model_name.human.downcase) %>:</h3>
+        <ul>
+          <% flash[:errors].each do |error| %>
+            <li><%= error %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div>
+      <%= form.label "Comment", style: "display: block" %>
+      <%= form.text_area :content %>
+    </div>
+    <div>
+      <%= form.submit %>
+    </div>
+  <% end %>
+</div>
