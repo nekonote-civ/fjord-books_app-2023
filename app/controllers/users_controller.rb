@@ -2,7 +2,7 @@
 
 class UsersController < ApplicationController
   def index
-    @users = User.order(:id).page(params[:page])
+    @users = User.eager_load(:profile).order(:id).page(params[:page])
   end
 
   def show
