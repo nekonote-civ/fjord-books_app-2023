@@ -68,7 +68,7 @@ class BooksController < ApplicationController
   end
 
   def set_comments
-    @comments = @book.comments.where.not(id: nil)
+    @comments = @book.comments.order(:id).where.not(id: nil)
   end
 
   # Only allow a list of trusted parameters through.

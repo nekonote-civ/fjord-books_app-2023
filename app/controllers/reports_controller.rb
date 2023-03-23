@@ -3,7 +3,7 @@
 class ReportsController < ApplicationController
   include ApplicationHelper
 
-  before_action :set_report, only: %i[ show update destroy edit ]
+  before_action :set_report, only: %i[show update destroy edit]
   before_action :set_comments, only: %i[show]
 
   def index
@@ -55,7 +55,7 @@ class ReportsController < ApplicationController
   end
 
   def set_comments
-    @comments = @report.comments.where.not(id: nil)
+    @comments = @report.comments.order(:id).where.not(id: nil)
   end
 
   def report_params

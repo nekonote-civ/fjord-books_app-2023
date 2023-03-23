@@ -2,8 +2,10 @@
 
 <div class="show-item">
   <%= render @report %>
-  <%= render "comments/form" %>
 </div>
+
+<%= render "comments/index" %>
+<%= render "comments/form" %>
 
 <nav class="page-nav">
   <%= link_to t('views.common.edit', name: Report.model_name.human.downcase), edit_report_path(@report) %> |

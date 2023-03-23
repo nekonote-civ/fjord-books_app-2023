@@ -7,6 +7,11 @@
     <pre><%= comment.content %></pre>
   </div>
   <div class="comment-footer">
-    <%= button_to t('views.common.destroy', name: Comment.model_name.human.downcase), polymorphic_path([comment.commentable, comment]), method: :delete %>
+    <nav class="page-nav">
+      <% if created_by?(comment.user_id) %>
+        <%= link_to t('views.common.edit', name: Comment.model_name.human.downcase), edit_polymorphic_path([comment.commentable, comment]) %>
+        <%= button_to t('views.common.destroy', name: Comment.model_name.human.downcase), polymorphic_path([comment.commentable, comment]), method: :delete %>
+      <% end %>
+    </nav>
   </div>
 </div>
