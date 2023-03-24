@@ -9,6 +9,10 @@ class ReportsController < ApplicationController
     @reports = Report.order(:id).page(params[:page])
   end
 
+  def show; end
+
+  def edit; end
+
   def new
     @report = Report.new
   end

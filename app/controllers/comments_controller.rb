@@ -16,8 +16,12 @@ class CommentsController < ApplicationController
     end
   end
 
+  def edit; end
+
   def update
-    return redirect_to polymorphic_path(@comment.commentable), alert: t('controllers.permission.alert_update', name: Comment.model_name.human) unless created_by?(@comment.user_id)
+    unless created_by?(@comment.user_id)
+      return redirect_to polymorphic_path(@comment.commentable), alert: t('controllers.permission.alert_update', name: Comment.model_name.human)
+    end
 
     if @comment.update(comment_params)
       redirect_to polymorphic_path(@comment.commentable), notice: t('controllers.common.notice_update', name: Comment.model_name.human)
@@ -27,7 +31,9 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    return redirect_to polymorphic_path(@comment.commentable), alert: t('controllers.permission.alert_destroy', name: Comment.model_name.human) unless created_by?(@comment.user_id)
+    unless created_by?(@comment.user_id)
+      return redirect_to polymorphic_path(@comment.commentable), alert: t('controllers.permission.alert_destroy', name: Comment.model_name.human)
+    end
 
     @comment.destroy
     redirect_to polymorphic_path(@comment.commentable), notice: t('controllers.common.notice_destroy', name: Comment.model_name.human)
