@@ -1,6 +1,6 @@
 <div class="comment-container">
   <div class="comment-header">
-    <h2><%= link_to user_name(comment.user_id), user_url(comment.user_id) %></h2>
+    <h2><%= link_to current_user_name(User.find(comment.user_id)), user_url(comment.user_id) %></h2>
     <time><%= l(comment.created_at, format: :long_time) %></time>
   </div>
   <div class="comment-body">
