@@ -12,7 +12,7 @@
     <% end %>
     <div>
       <%= form.label :content, style: "display: block" %>
-      <%= form.text_area :content %>
+      <%= form.text_area :content, required: true %>
     </div>
     <div>
       <%= form.submit t("helpers.submit.comment") %>
