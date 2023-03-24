@@ -11,6 +11,19 @@
   </head>
 
   <body class="<%= params[:action] %>">
+    <header>
+      <nav>
+        <% if user_signed_in? %>
+          <ul>
+            <li><%= link_to t('views.common.title_index', name: Book.model_name.human.downcase), books_path %> |</li>
+            <li><%= link_to t('views.common.title_index', name: User.model_name.human.downcase), users_path %> |</li>
+            <li><%= link_to t('views.common.show_content', name: User.model_name.human.downcase, content: Profile.model_name.human.downcase), current_user %> |</li>
+            <li><%= link_to t('views.common.edit_content', name: User.model_name.human.downcase, content: Profile.model_name.human.downcase), edit_user_registration_path %> |</li>
+            <li><%= link_to t('views.common.session.sign_out'), destroy_user_session_path, method: :delete, data: { turbo_method: :delete } %></li>
+          </ul>
+        <% end %>
+      </nav>
+    </header>
     <%= yield %>
   </body>
 </html>
