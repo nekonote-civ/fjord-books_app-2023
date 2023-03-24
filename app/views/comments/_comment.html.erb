@@ -1,7 +1,11 @@
 <div class="comment-container">
   <div class="comment-header">
     <h2><%= link_to current_user_name(User.find(comment.user_id)), user_url(comment.user_id) %></h2>
-    <time><%= l(comment.created_at, format: :long_time) %></time>
+    <% if comment.created_at == comment.updated_at %>
+      <time><%= l(comment.created_at, format: :long_time) %></time>
+    <% else %>
+      <time><%= t('views.common.edited') %><%= l(comment.updated_at, format: :long_time) %></time>
+    <% end %>
   </div>
   <div class="comment-body">
     <pre><%= comment.content %></pre>
