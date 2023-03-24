@@ -17,3 +17,11 @@
   <%= f.label :self_introduction %><br />
   <%= f.text_area :self_introduction %>
 </div>
+
+<div class="field">
+  <%= f.label :avatar %><br />
+  <%= f.file_field(:avatar, accept: 'image/jpeg,image/png,image/gif') %>
+    <p>
+      <%= image_tag current_user.avatar.variant(:thumb) if user_signed_in? && current_user.avatar.attached? %>
+    </p>
+</div>
