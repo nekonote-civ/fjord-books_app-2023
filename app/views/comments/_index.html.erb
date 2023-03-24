@@ -1,7 +1,10 @@
 <div id="comments">
-  <h2>コメント</h2>
-  <p><%= 'No comments.' if @comments.count.zero? %></p>
-  <% @comments.each do |comment| %>
+  <h2><%= t('views.common.title_index', name: Comment.model_name.human) %></h2>
+  <p><%= 'No comments.' if commentable.comments.count.zero? %></p>
+
+  <% commentable.comments.each do |comment| %>
     <%= render "comments/comment", { comment: } %>
   <% end %>
+
+  <%= render "comments/form", { commentable: } %>
 </div>
