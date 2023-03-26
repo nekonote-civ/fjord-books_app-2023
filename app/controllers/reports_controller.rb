@@ -3,6 +3,8 @@
 class ReportsController < ApplicationController
   before_action :set_report, only: %i[edit update destroy]
 
+  REPORTS_REGEXP = %r{http://localhost:3000/reports/[0-9]\d+}
+
   def index
     @reports = Report.includes(:user).order(id: :desc).page(params[:page])
   end
@@ -20,11 +22,17 @@ class ReportsController < ApplicationController
 
   def create
     @report = current_user.reports.new(report_params)
+    mention_reports = scan_mention_reports(@report.content)
 
-    if @report.save
-      redirect_to @report, notice: t('controllers.common.notice_create', name: Report.model_name.human)
-    else
-      render :new, status: :unprocessable_entity
+    @report.transaction do
+      if @report.save
+        mention_reports.each do |mention_report|
+          Mention.create(mentioning_report_id: @report.id, mentioned_report_id: mention_report.id)
+        end
+        redirect_to @report, notice: t('controllers.common.notice_create', name: Report.model_name.human)
+      else
+        render :new, status: :unprocessable_entity
+      end
     end
   end
 
@@ -50,5 +58,12 @@ class ReportsController < ApplicationController
 
   def report_params
     params.require(:report).permit(:title, :content)
+  end
+
+  def scan_mention_reports(content)
+    content.scan(REPORTS_REGEXP).map do |url|
+      id = url.split('/').last
+      Report.find_by(id:)
+    end.compact.uniq
   end
 end
