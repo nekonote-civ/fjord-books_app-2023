@@ -4,12 +4,10 @@
   <%= render @report %>
 </div>
 
-<p>この日報は以下の日報から言及されています</p>
+<p>This daily report is referenced from the following daily reports</p>
 <% @report.mentioned_reports.each do |mentioned_report| %>
-  <%= mentioned_report.id %>
+  <div><%= link_to report_url(mentioned_report.id) %></div>
 <% end %>
-
-
 
 <%= render 'shared/comments', commentable: @report %>
 
