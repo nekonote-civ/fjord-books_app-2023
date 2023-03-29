@@ -41,7 +41,7 @@ class ReportsController < ApplicationController
     ActiveRecord::Base.transaction do
       @report.update!(report_params)
       mentions_error = true
-      # @report.mentioning_relationships.each(&:destroy!)
+      @report.mentioning_relationships.each(&:destroy!)
       create_mentions
     end
     redirect_to @report, notice: t('controllers.common.notice_update', name: Report.model_name.human)
