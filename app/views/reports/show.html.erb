@@ -4,11 +4,7 @@
   <%= render @report %>
 </div>
 
-<p>This daily report is referenced from the following daily reports</p>
-<% @report.mentioned_reports.each do |mentioned_report| %>
-  <div><%= link_to report_url(mentioned_report.id) %></div>
-<% end %>
-
+<%= render 'links', report: @report %>
 <%= render 'shared/comments', commentable: @report %>
 
 <nav class="page-nav">
