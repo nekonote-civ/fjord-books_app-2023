@@ -3,7 +3,7 @@
   <ul>
     <% report.mentioned_reports.each do |mentioned_report| %>
       <li>
-        <%= link_to report_url(mentioned_report.id), report_url(mentioned_report.id) %> <%= t('views.report.after_message', name: Report.model_name.human.downcase) %> <%= elapsed_datetime(report.created_at, mentioned_report.created_at) %>
+        <%= link_to mentioned_report.title, report_url(mentioned_report.id) %> <%= t('views.report.after_message', name: Report.model_name.human.downcase) %> <%= elapsed_datetime(report.created_at, mentioned_report.created_at) %>
       </li>
     <% end %>
   </ul>
