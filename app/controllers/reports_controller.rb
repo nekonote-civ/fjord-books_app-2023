@@ -30,8 +30,8 @@ class ReportsController < ApplicationController
         create_mentions
       end
       redirect_to @report, notice: t('controllers.common.notice_create', name: Report.model_name.human)
-    rescue ActiveRecord::RecordInvalid
-      # TODO: エラー発生時にエラーログを出力する
+    rescue ActiveRecord::RecordInvalid => e
+      logger.error(e)
       mentions_error ? render('errors/500', status: :internal_server_error) : render(:new, status: :unprocessable_entity)
     end
   end
@@ -41,12 +41,12 @@ class ReportsController < ApplicationController
     ActiveRecord::Base.transaction do
       @report.update!(report_params)
       mentions_error = true
-      @report.mentioning_relationships.each(&:destroy!)
+      # @report.mentioning_relationships.each(&:destroy!)
       create_mentions
     end
     redirect_to @report, notice: t('controllers.common.notice_update', name: Report.model_name.human)
-  rescue ActiveRecord::RecordInvalid
-    # TODO: エラー発生時にエラーログを出力する
+  rescue ActiveRecord::RecordInvalid => e
+    logger.error(e)
     mentions_error ? render('errors/500', status: :internal_server_error) : render(:edit, status: :unprocessable_entity)
   end
 
