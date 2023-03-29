@@ -113,6 +113,9 @@ ja:
     template:
       body: 次の項目を確認してください
       header: "%{model}に%{count}個のエラーが発生しました"
+    internal_server_error:
+      title: '500 Internal Server Error'
+      message: 'サーバー側でエラーが発生しました。'
   helpers:
     select:
       prompt: 選択してください

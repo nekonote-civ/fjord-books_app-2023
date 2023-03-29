@@ -3,7 +3,7 @@
 class ReportsController < ApplicationController
   before_action :set_report, only: %i[edit update destroy]
 
-  REPORTS_REGEXP = %r{http://localhost:3000/reports/\d+}
+  include ApplicationHelper
 
   def index
     @reports = Report.includes(:user).order(id: :desc).page(params[:page])
@@ -22,27 +22,32 @@ class ReportsController < ApplicationController
 
   def create
     @report = current_user.reports.new(report_params)
-
-    @report.transaction do
-      if @report.save
+    begin
+      mentions_error = false
+      ActiveRecord::Base.transaction do
+        @report.save!
+        mentions_error = true
         create_mentions
-        redirect_to @report, notice: t('controllers.common.notice_create', name: Report.model_name.human)
-      else
-        render :new, status: :unprocessable_entity
       end
+      redirect_to @report, notice: t('controllers.common.notice_create', name: Report.model_name.human)
+    rescue ActiveRecord::RecordInvalid
+      # TODO: エラー発生時にエラーログを出力する
+      mentions_error ? render('errors/500', status: :internal_server_error) : render(:new, status: :unprocessable_entity)
     end
   end
 
   def update
-    @report.transaction do
-      if @report.update(report_params)
-        @report.mentioning_relationships.each(&:destroy!)
-        create_mentions
-        redirect_to @report, notice: t('controllers.common.notice_update', name: Report.model_name.human)
-      else
-        render :edit, status: :unprocessable_entity
-      end
+    mentions_error = false
+    ActiveRecord::Base.transaction do
+      @report.update!(report_params)
+      mentions_error = true
+      @report.mentioning_relationships.each(&:destroy!)
+      create_mentions
     end
+    redirect_to @report, notice: t('controllers.common.notice_update', name: Report.model_name.human)
+  rescue ActiveRecord::RecordInvalid
+    # TODO: エラー発生時にエラーログを出力する
+    mentions_error ? render('errors/500', status: :internal_server_error) : render(:edit, status: :unprocessable_entity)
   end
 
   def destroy
