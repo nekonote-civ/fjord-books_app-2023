@@ -20,4 +20,9 @@ module ApplicationHelper
   def format_content(content)
     safe_join(content.split("\n"), tag.br)
   end
+
+  def format_report_url(content)
+    sanitize_content = sanitize(content, tags: %w[a br], attributes: %w[href])
+    sanitize_content.gsub(REPORTS_REGEXP) { |url| link_to(url, url) }
+  end
 end
