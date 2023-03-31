@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class CommentsController < ApplicationController
-  include ApplicationHelper
-
   before_action :set_comment, only: %i[update destroy edit]
 
   def create
@@ -20,7 +18,7 @@ class CommentsController < ApplicationController
   def edit; end
 
   def update
-    unless created_by?(@comment.user_id)
+    unless @comment.created_by?(current_user.id, @comment.user_id)
       return redirect_to polymorphic_path(@comment.commentable), alert: t('controllers.permission.alert_update', name: Comment.model_name.human)
     end
 
@@ -32,7 +30,7 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    unless created_by?(@comment.user_id)
+    unless @comment.created_by?(current_user.id, @comment.user_id)
       return redirect_to polymorphic_path(@comment.commentable), alert: t('controllers.permission.alert_destroy', name: Comment.model_name.human)
     end
 
