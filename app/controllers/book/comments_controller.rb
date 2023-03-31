@@ -8,4 +8,9 @@ class Book::CommentsController < CommentsController
   def set_commentable
     @commentable = Book.find(params[:book_id])
   end
+
+  def render_show_commentable
+    @book = @commentable
+    render 'books/show', status: :unprocessable_entity
+  end
 end

@@ -12,7 +12,8 @@ class CommentsController < ApplicationController
     if @comment.save
       redirect_to polymorphic_path(@comment.commentable), notice: t('controllers.common.notice_create', name: Comment.model_name.human)
     else
-      redirect_to polymorphic_path(@comment.commentable), status: :unprocessable_entity, flash: { errors: @comment.errors.full_messages }
+      @commentable.comments.destroy(@commentable.comments.last)
+      render_show_commentable
     end
   end
 
