@@ -22,32 +22,41 @@ class ReportsController < ApplicationController
 
   def create
     @report = current_user.reports.new(report_params)
-    begin
-      mentions_error = false
-      ActiveRecord::Base.transaction do
-        @report.save!
-        mentions_error = true
-        create_mentions
+
+    ActiveRecord::Base.transaction do
+      report_saved = @report.save
+      mentions_saved = report_saved ? create_mentions : false
+
+      if mentions_saved
+        redirect_to(@report, notice: t('controllers.common.notice_create', name: Report.model_name.human))
+      elsif !report_saved
+        render(:new, status: :unprocessable_entity)
+        raise ActiveRecord::Rollback
+      else
+        render('errors/500', status: :internal_server_error)
+        logger.error('Mentions save error')
+        raise ActiveRecord::Rollback
       end
-      redirect_to @report, notice: t('controllers.common.notice_create', name: Report.model_name.human)
-    rescue ActiveRecord::RecordInvalid => e
-      logger.error(e)
-      mentions_error ? render('errors/500', status: :internal_server_error) : render(:new, status: :unprocessable_entity)
     end
   end
 
   def update
-    mentions_error = false
     ActiveRecord::Base.transaction do
-      @report.update!(report_params)
-      mentions_error = true
+      report_updated = @report.update(report_params)
       @report.mentioning_relationships.each(&:destroy!)
-      create_mentions
+      mentions_saved = report_updated ? create_mentions : false
+
+      if mentions_saved
+        redirect_to @report, notice: t('controllers.common.notice_update', name: Report.model_name.human)
+      elsif !report_updated
+        render(:edit, status: :unprocessable_entity)
+        raise ActiveRecord::Rollback
+      else
+        render('errors/500', status: :internal_server_error)
+        logger.error('Mentions save error')
+        raise ActiveRecord::Rollback
+      end
     end
-    redirect_to @report, notice: t('controllers.common.notice_update', name: Report.model_name.human)
-  rescue ActiveRecord::RecordInvalid => e
-    logger.error(e)
-    mentions_error ? render('errors/500', status: :internal_server_error) : render(:edit, status: :unprocessable_entity)
   end
 
   def destroy
@@ -73,8 +82,9 @@ class ReportsController < ApplicationController
   def create_mentions
     mention_reports = scan_mentioning_reports(@report.content)
     mention_reports.each do |mention_report|
-      Mention.create!(reports_params(@report.id, mention_report.id))
+      return false unless Mention.create(reports_params(@report.id, mention_report.id))
     end
+    true
   end
 
   def scan_mentioning_reports(content)
