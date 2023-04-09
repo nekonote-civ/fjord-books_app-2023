@@ -78,8 +78,7 @@ class ReportsController < ApplicationController
   end
 
   def scan_mentioning_reports(content)
-    content.scan(REPORTS_REGEXP).map do |url|
-      id = url.split('/').last
+    content.scan(REPORTS_REGEXP).map do |id|
       Report.find_by(id:)
     end.compact.uniq
   end

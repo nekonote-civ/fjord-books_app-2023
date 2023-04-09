@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
-  REPORTS_REGEXP = %r{http://localhost:3000/reports/\d+}
+  REPORTS_REGEXP = %r{http://localhost:3000/reports/(\d+)}
 
   # localeに応じて複数形の表記を変える
   # - 日本語の場合 => 本
