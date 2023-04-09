@@ -5,7 +5,7 @@ class Comment < ApplicationRecord
 
   validates :content, presence: true
 
-  def created_by?(current_user_id, comment_user_id)
-    current_user_id == comment_user_id
+  def created_by?(current_user_id)
+    current_user_id == user_id
   end
 end

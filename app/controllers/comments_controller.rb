@@ -18,7 +18,7 @@ class CommentsController < ApplicationController
   def edit; end
 
   def update
-    unless @comment.created_by?(current_user.id, @comment.user_id)
+    unless @comment.created_by?(current_user.id)
       return redirect_to polymorphic_path(@comment.commentable), alert: t('controllers.permission.alert_update', name: Comment.model_name.human)
     end
 
@@ -30,7 +30,7 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    unless @comment.created_by?(current_user.id, @comment.user_id)
+    unless @comment.created_by?(current_user.id)
       return redirect_to polymorphic_path(@comment.commentable), alert: t('controllers.permission.alert_destroy', name: Comment.model_name.human)
     end
 

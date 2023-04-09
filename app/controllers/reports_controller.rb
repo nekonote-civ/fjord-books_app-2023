@@ -25,9 +25,7 @@ class ReportsController < ApplicationController
   end
 
   def update
-    unless @report.created_by?(current_user.id, @report.user_id)
-      return redirect_to report_path, alert: t('controllers.permission.alert_update', name: Report.model_name.human)
-    end
+    return redirect_to report_path, alert: t('controllers.permission.alert_update', name: Report.model_name.human) unless @report.created_by?(current_user.id)
 
     if @report.update(report_params)
       redirect_to @report, notice: t('controllers.common.notice_update', name: Report.model_name.human)
@@ -37,9 +35,7 @@ class ReportsController < ApplicationController
   end
 
   def destroy
-    unless @report.created_by?(current_user.id, @report.user_id)
-      return redirect_to report_url, alert: t('controllers.permission.alert_destroy', name: Report.model_name.human)
-    end
+    return redirect_to report_url, alert: t('controllers.permission.alert_destroy', name: Report.model_name.human) unless @report.created_by?(current_user.id)
 
     @report.destroy
     redirect_to @report, notice: t('controllers.common.notice_destroy', name: Report.model_name.human)
