@@ -88,8 +88,7 @@ class ReportsController < ApplicationController
   end
 
   def scan_mentioning_reports(content)
-    content.scan(REPORTS_REGEXP).map do |id|
-      Report.find_by(id:)
-    end.compact.uniq
+    ids = content.scan(REPORTS_REGEXP).flatten.uniq
+    Report.where(id: ids)
   end
 end
