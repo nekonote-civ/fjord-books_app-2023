@@ -81,10 +81,9 @@ class ReportsController < ApplicationController
 
   def create_mentions
     mention_reports = scan_mentioning_reports(@report.content)
-    mention_reports.each do |mention_report|
-      return false unless Mention.create(reports_params(@report.id, mention_report.id))
+    mention_reports.all? do |mention_report|
+      Mention.create(reports_params(@report.id, mention_report.id))
     end
-    true
   end
 
   def scan_mentioning_reports(content)
