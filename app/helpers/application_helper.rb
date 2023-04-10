@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
-  REPORTS_REGEXP = %r{http://localhost:3000/reports/(\d+)}
-
   # localeに応じて複数形の表記を変える
   # - 日本語の場合 => 本
   # - 英語の場合 => books
@@ -23,7 +21,7 @@ module ApplicationHelper
 
   def format_report_url(content)
     sanitize_content = sanitize(content, tags: %w[a br], attributes: %w[href])
-    sanitize_content.gsub(REPORTS_REGEXP) { |url| link_to(url, url) }
+    sanitize_content.gsub(Report::REPORTS_REGEXP) { |url| link_to(url, url) }
   end
 
   def elapsed_datetime(before_datetime, after_datetime)

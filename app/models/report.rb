@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Report < ApplicationRecord
+  REPORTS_REGEXP = %r{http://localhost:3000/reports/(\d+)}
+
   belongs_to :user
   has_many :comments, as: :commentable, dependent: :destroy
 
@@ -19,5 +21,9 @@ class Report < ApplicationRecord
 
   def created_on
     created_at.to_date
+  end
+
+  def mention_ids(content)
+    content.scan(REPORTS_REGEXP).flatten.uniq
   end
 end

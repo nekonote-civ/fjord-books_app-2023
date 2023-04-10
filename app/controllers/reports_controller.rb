@@ -80,14 +80,14 @@ class ReportsController < ApplicationController
   end
 
   def create_mentions
-    mention_reports = scan_mentioning_reports(@report.content)
+    mention_reports = scan_mentioning_reports(@report)
     mention_reports.all? do |mention_report|
       Mention.create(reports_params(@report.id, mention_report.id))
     end
   end
 
-  def scan_mentioning_reports(content)
-    ids = content.scan(REPORTS_REGEXP).flatten.uniq
+  def scan_mentioning_reports(report)
+    ids = report.mention_ids(report.content)
     Report.where(id: ids)
   end
 end
