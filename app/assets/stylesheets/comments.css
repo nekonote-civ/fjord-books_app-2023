@@ -1,0 +1,57 @@
+#comments {
+  padding: 20px 0;
+}
+
+.comment-container {
+  max-width: var(--single-column-w);
+  border: solid var(--global-bw) var(--global-bc);
+  margin-bottom: 15px;
+}
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: solid var(--global-bw) var(--global-bc);
+  padding: .75rem 1rem;
+}
+
+.comment-header h2 {
+  font-size: .875rem;
+  margin: 0;
+}
+
+.comment-header time {
+  display: block;
+  font-size: .8125rem;
+  color: #a09fa8;
+  white-space: nowrap;
+}
+
+.comment-body {
+  display: flex;
+  padding: .75rem 1rem;
+}
+
+.comment-footer {
+  display: flex;
+  border-top: solid var(--global-bw) var(--global-bc);
+  padding: .75rem 1rem;
+}
+
+.comment-footer-items {
+  display: flex;
+  align-items: center;
+  font-size: var(--global-fz-md);
+}
+
+.comment-footer-item {
+  display: inline-block;
+  margin-right: .75rem;
+}
+
+#comment-form {
+  max-width: var(--single-column-w);
+  padding: .75rem 1rem;
+  border: solid var(--global-bw) var(--global-bc);
+}

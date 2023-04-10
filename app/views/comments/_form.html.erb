@@ -1,0 +1,21 @@
+<div id="comment-form">
+  <%= form_with(model: [commentable, @comment ||= Comment.new]) do |form| %>
+    <% if @comment.errors.any? %>
+      <div style="color: red">
+        <h3><%= t('views.common.validation_error', errors: i18n_error_count(@comment.errors.count), name: Comment.model_name.human.downcase) %>:</h3>
+        <ul>
+          <% @comment.errors.full_messages.each do |error| %>
+            <li><%= error %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div>
+      <%= form.label :content, style: "display: block" %>
+      <%= form.text_area :content, required: true %>
+    </div>
+    <div>
+      <%= form.submit @comment.id.nil? ? t("helpers.submit.comment") : t("helpers.submit.update") %>
+    </div>
+  <% end %>
+</div>

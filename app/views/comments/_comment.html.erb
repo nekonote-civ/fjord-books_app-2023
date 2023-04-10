@@ -1,0 +1,25 @@
+<div class="comment-container">
+  <div class="comment-header">
+    <h2><%= link_to current_user_name(User.find(comment.user_id)), user_url(comment.user_id) %></h2>
+    <% if comment.created_at == comment.updated_at %>
+      <time><%= l(comment.created_at, format: :long_time) %></time>
+    <% else %>
+      <time><%= t('views.common.edited') %><%= l(comment.updated_at, format: :long_time) %></time>
+    <% end %>
+  </div>
+  <div class="comment-body">
+    <pre><%= comment.content %></pre>
+  </div>
+  <div class="comment-footer">
+    <% if comment.created_by?(current_user.id) %>
+      <div class="comment-footer-items">
+        <div class="comment-footer-item">
+          <%= link_to t('views.common.edit', name: Comment.model_name.human.downcase), edit_polymorphic_path([comment.commentable, comment]) %>
+        </div>
+        <div class="comment-footer-item">
+          <%= button_to t('views.common.destroy', name: Comment.model_name.human.downcase), polymorphic_path([comment.commentable, comment]), method: :delete %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
