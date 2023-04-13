@@ -18,4 +18,25 @@ module ApplicationHelper
   def format_content(content)
     safe_join(content.split("\n"), tag.br)
   end
+
+  def format_report_url(content)
+    sanitize_content = sanitize(content, tags: %w[a br], attributes: %w[href])
+    sanitize_content.gsub(Report::REPORTS_REGEXP) { |url| link_to(url, url) }
+  end
+
+  def elapsed_datetime(before_datetime, after_datetime)
+    diff_in_seconds = before_datetime - after_datetime
+    if diff_in_seconds >= 1.year
+      years_ago = (diff_in_seconds / 1.year).floor
+      "#{years_ago} years ago"
+    elsif diff_in_seconds >= 1.month
+      months_ago = (diff_in_seconds / 1.month).floor
+      "#{months_ago} months ago"
+    elsif diff_in_seconds >= 1.day
+      days_ago = (diff_in_seconds / 1.day).floor
+      "#{days_ago} days ago"
+    else
+      ''
+    end
+  end
 end

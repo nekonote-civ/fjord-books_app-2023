@@ -3,6 +3,8 @@
 class ReportsController < ApplicationController
   before_action :set_report, only: %i[edit update destroy]
 
+  include ApplicationHelper
+
   def index
     @reports = Report.includes(:user).order(id: :desc).page(params[:page])
   end
@@ -21,18 +23,39 @@ class ReportsController < ApplicationController
   def create
     @report = current_user.reports.new(report_params)
 
-    if @report.save
-      redirect_to @report, notice: t('controllers.common.notice_create', name: Report.model_name.human)
-    else
-      render :new, status: :unprocessable_entity
+    ActiveRecord::Base.transaction do
+      report_saved = @report.save
+      mentions_saved = report_saved ? create_mentions : false
+
+      if mentions_saved
+        redirect_to(@report, notice: t('controllers.common.notice_create', name: Report.model_name.human))
+      elsif !report_saved
+        render(:new, status: :unprocessable_entity)
+        raise ActiveRecord::Rollback
+      else
+        render('errors/500', status: :internal_server_error)
+        logger.error('Mentions save error')
+        raise ActiveRecord::Rollback
+      end
     end
   end
 
   def update
-    if @report.update(report_params)
-      redirect_to @report, notice: t('controllers.common.notice_update', name: Report.model_name.human)
-    else
-      render :edit, status: :unprocessable_entity
+    ActiveRecord::Base.transaction do
+      report_updated = @report.update(report_params)
+      @report.mentioning_relationships.each(&:destroy!)
+      mentions_saved = report_updated ? create_mentions : false
+
+      if mentions_saved
+        redirect_to @report, notice: t('controllers.common.notice_update', name: Report.model_name.human)
+      elsif !report_updated
+        render(:edit, status: :unprocessable_entity)
+        raise ActiveRecord::Rollback
+      else
+        render('errors/500', status: :internal_server_error)
+        logger.error('Mentions save error')
+        raise ActiveRecord::Rollback
+      end
     end
   end
 
@@ -50,5 +73,21 @@ class ReportsController < ApplicationController
 
   def report_params
     params.require(:report).permit(:title, :content)
+  end
+
+  def reports_params(mentioning_report_id, mentioned_report_id)
+    { mentioning_report_id:, mentioned_report_id: }
+  end
+
+  def create_mentions
+    mention_reports = scan_mentioning_reports(@report)
+    mention_reports.all? do |mention_report|
+      Mention.create(reports_params(@report.id, mention_report.id))
+    end
+  end
+
+  def scan_mentioning_reports(report)
+    ids = report.mention_ids(report.content)
+    Report.where(id: ids)
   end
 end
